@@ -1,0 +1,16 @@
+{
+  "env": {
+    "browser": true
+  },
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": ["error"],
+    "react/jsx-filename-extension": "off",
+    "react/jsx-curly-newline": "off",
+    "func-names": "off",
+    "no-unused-vars": "warn",
+    "global-require": "off"
+  },
+  "parser": "babel-eslint"
+}
