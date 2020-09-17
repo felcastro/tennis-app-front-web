@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Box,
   useDisclosure,
@@ -17,58 +17,43 @@ import { FaBars } from "react-icons/fa";
 
 import MainMenu from "../MainMenu";
 
-export default () => {
-  const ButtonWithDrawer = () => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const btnRef = React.useRef();
-    const { colors } = useTheme();
-    const { colorMode } = useColorMode();
-    return (
-      <Box display={{ base: "block", md: "none" }}>
-        <Box
-          as={FaBars}
-          fontSize="xl"
-          mr={4}
-          cursor="pointer"
-          onClick={onOpen}
-          ref={btnRef}
-        />
-        <Drawer
-          isOpen={isOpen}
-          placement="left"
-          onClose={onClose}
-          finalFocusRef={btnRef}
-          size="14rem"
-        >
-          <DrawerOverlay />
-          <DrawerContent
-            bg={colors.sidebarBg[colorMode]}
-            color={colors.mainFont[colorMode]}
-          >
-            <DrawerCloseButton />
-            <DrawerHeader>Menu</DrawerHeader>
-            <DrawerBody p={0}>
-              <MainMenu />
-            </DrawerBody>
-            <DrawerFooter></DrawerFooter>
-          </DrawerContent>
-        </Drawer>
-      </Box>
-    );
-  };
+import "../SidebarMenu/SidebarMenu.css";
 
-  const ButtonWithoutDrawer = () => {
-    return (
-      <Box display={{ base: "none", md: "block" }}>
-        <Box as={FaBars} fontSize="xl" mr={4} cursor="pointer" />
-      </Box>
-    );
-  };
+export default () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = React.useRef();
+  const { colors } = useTheme();
+  const { colorMode } = useColorMode();
 
   return (
-    <Box>
-      <ButtonWithDrawer />
-      <ButtonWithoutDrawer />
+    <Box display={{ base: "block", md: "none" }}>
+      <Box
+        as={FaBars}
+        fontSize="xl"
+        mr={4}
+        cursor="pointer"
+        onClick={onOpen}
+        ref={btnRef}
+      />
+      <Drawer
+        isOpen={isOpen}
+        placement="left"
+        onClose={onClose}
+        finalFocusRef={btnRef}
+        size="14rem"
+      >
+        <DrawerOverlay />
+        <DrawerContent
+          bg={colors.sidebarBg[colorMode]}
+          color={colors.mainFont[colorMode]}
+        >
+          <DrawerCloseButton />
+          <DrawerHeader>Menu</DrawerHeader>
+          <DrawerBody p={0} className="custom-scroll" overflowY="auto">
+            <MainMenu />
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </Box>
   );
 };

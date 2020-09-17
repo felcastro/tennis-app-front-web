@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   Box,
   Button,
-  ButtonGroup,
   Divider,
   Flex,
   FormControl,
@@ -10,31 +10,26 @@ import {
   Image,
   Input,
   Link,
+  Stack,
+  FormErrorMessage,
 } from "@chakra-ui/core";
 import { Link as ReachLink } from "react-router-dom";
 import { FaGoogle, FaFacebook } from "react-icons/fa";
+import { IoIosTennisball } from "react-icons/io";
 import { useDispatch } from "react-redux";
 
 import api from "../../services/api";
 
 export default () => {
-  const [values, setValues] = useState({ email: "", password: "" });
   const [isLoading, setLoading] = useState(false);
+  const [formError, setFormError] = useState("");
   const dispatch = useDispatch();
+  const { register, handleSubmit, watch, errors } = useForm();
 
-  function onChange(event) {
-    const { value, name } = event.target;
-
-    setValues({
-      ...values,
-      [name]: value,
-    });
-  }
-
-  function onClick(event) {
+  const onSubmit = (data) => {
     setLoading(true);
-    event.preventDefault();
-    const { email, password } = values;
+    // event.preventDefault();
+    const { email, password } = data;
     api
       .post("/auth/login", { email, password })
       .then((response) => {
@@ -52,29 +47,35 @@ export default () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        err.response.data.error
+          ? setFormError(err.response.data.error.message)
+          : setFormError("Ocorreu um erro inexperado, tente novamente");
       });
-  }
+  };
 
   return (
-    <Box maxW={300} m="1em auto">
-      <Image
-        m="auto"
-        size="48px"
-        src={require("../../images/logo192.png")}
-        alt=""
+    <Box
+      maxW={{ base: "auto", sm: "18rem" }}
+      mt={4}
+      mx={{ base: 4, sm: "auto" }}
+    >
+      <Box
+        as={IoIosTennisball}
+        size="2.5rem"
+        mr={1}
+        mx="auto"
+        color="#c9f364"
       />
-      <Heading as="h2" size="lg" textAlign="center" my="4">
+      <Heading as="h2" size="md" textAlign="center" py="4">
         Entrar no TennisApp
       </Heading>
-      <ButtonGroup spacing={4} display="flex">
+      <Stack isInline spacing={4}>
         <Button
           isDisabled={isLoading}
           leftIcon={FaGoogle}
           variantColor="blue"
           variant="outline"
           flex="1 1 0px"
-          onClick={onClick}
         >
           Google
         </Button>
@@ -84,51 +85,72 @@ export default () => {
           variantColor="blue"
           variant="outline"
           flex="1 1 0px"
-          onClick={onClick}
         >
           Facebook
         </Button>
-      </ButtonGroup>
-      <Flex my="4" align="center" justify="center">
-        <Divider orientation="horizontal" />
-        <span>ou</span>
-        <Divider orientation="horizontal" />
-      </Flex>
-      <form onSubmit={onClick}>
-        <FormControl isRequired mt="4" className="">
+      </Stack>
+      <Stack isInline py={4} align="center" justify="center" spacing={2}>
+        <Divider orientation="horizontal" flex={1} m={0} />
+        <Box as="span">ou</Box>
+        <Divider orientation="horizontal" flex={1} m={0} />
+      </Stack>
+      <Stack as="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
+        <Flex
+          px={4}
+          py={2}
+          align="center"
+          display={formError ? "block" : "none"}
+          bg="red.200"
+          border="1px solid"
+          borderColor="red.400"
+          borderRadius=".25em"
+        >
+          {formError}
+        </Flex>
+        <FormControl isInvalid={errors.email}>
           <Input
             id="email"
-            type="email"
             name="email"
             placeholder="E-mail"
             size="lg"
-            onChange={onChange}
-            value={values.email}
+            ref={register({
+              required: "E-mail não pode estar em branco",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Informe um e-mail válido",
+              },
+            })}
           />
+          <FormErrorMessage>
+            {errors.email && errors.email.message}
+          </FormErrorMessage>
         </FormControl>
-        <FormControl isRequired mt="4" className="">
+        <FormControl isInvalid={errors.password}>
           <Input
             id="password"
             type="password"
             name="password"
             placeholder="Password"
             size="lg"
-            onChange={onChange}
-            value={values.password}
+            ref={register({
+              required: "Senha não pode estar em branco",
+            })}
           />
+          <FormErrorMessage>
+            {errors.password && errors.password.message}
+          </FormErrorMessage>
         </FormControl>
         <Button
           isLoading={isLoading}
           type="submit"
           variantColor="green"
           width="100%"
-          mt="8"
-          //   onClick={onClick}
+          mt={4}
         >
           Entrar
         </Button>
-      </form>
-      <Flex mt="4" align="center" justify="center">
+      </Stack>
+      <Flex mt={4} align="center" justify="center" fontSize="sm">
         <Link as={ReachLink} to="/register">
           Criar uma conta
         </Link>
@@ -137,4 +159,4 @@ export default () => {
       </Flex>
     </Box>
   );
-}
+};

@@ -22,7 +22,7 @@ export default () => {
       },
       mainBg: {
         light: "gray.50",
-        dark: "black",
+        dark: "#0b0c11",
       },
       mainBgSelected: {
         light: "gray.200",
@@ -37,32 +37,42 @@ export default () => {
         dark: "gray.50",
       },
       mainBorder: {
-        light: "rgba(160, 174, 192, .6)",
-        dark: "rgba(226, 232, 240, .6)",
+        light: "rgba(160, 174, 192, .4)",
+        dark: "rgba(226, 232, 240, .4)",
       },
       mainDivider: {
-        light: "gray.400",
-        dark: "gray.200",
+        light: "rgba(160, 174, 192, .6)",
+        dark: "rgba(226, 232, 240, .6)",
       },
       mainComponentBg: {
         light: "gray.200",
         dark: "gray.800",
       },
+      mainCardLeftBg: {
+        light: "gray.400",
+        dark: "gray.300",
+      },
     },
     fonts: {
       ...theme.fonts,
       body: "Montserrat, Roboto, sans-serif",
+      heading: "Montserrat, Roboto, sans-serif",
+      mono: "Montserrat, Roboto, sans-serif",
     },
   };
 
   return (
     <ThemeProvider theme={customTheme}>
       <CSSReset />
-      <ColorModeProvider>
-        <React.Suspense fallback={<Spinner />}>
-          {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
-        </React.Suspense>
-      </ColorModeProvider>
+      <React.Suspense fallback={<Spinner />}>
+        {user ? (
+          <ColorModeProvider>
+            <AuthenticatedApp />
+          </ColorModeProvider>
+        ) : (
+          <UnauthenticatedApp />
+        )}
+      </React.Suspense>
     </ThemeProvider>
   );
 };

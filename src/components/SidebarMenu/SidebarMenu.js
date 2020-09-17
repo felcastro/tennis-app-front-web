@@ -1,10 +1,6 @@
 import React, { useState } from "react";
-import { useLocation, Link as RouterLink } from "react-router-dom";
-import {
-  Box,
-  useColorMode,
-  useTheme,
-} from "@chakra-ui/core";
+import { useSelector } from "react-redux";
+import { Box, useColorMode, useTheme } from "@chakra-ui/core";
 
 import "./SidebarMenu.css";
 import MainMenu from "../MainMenu";
@@ -12,6 +8,7 @@ import MainMenu from "../MainMenu";
 export default () => {
   const { colors } = useTheme();
   const { colorMode } = useColorMode();
+  const isSidebarOpen = useSelector((state) => state.isSidebarOpen);
 
   return (
     <Box
@@ -30,8 +27,7 @@ export default () => {
         position="relative"
         bg={colors.sidebarBg[colorMode]}
         overflowY="auto"
-        h="calc(100vh - 4.5rem)"
-        overflowY="auto"
+        h="calc(100vh - 4rem)"
       >
         <MainMenu />
       </Box>

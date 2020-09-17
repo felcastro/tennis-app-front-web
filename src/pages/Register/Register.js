@@ -9,6 +9,7 @@ import {
   Link,
 } from "@chakra-ui/core";
 import { Link as ReachLink } from "react-router-dom";
+import { IoIosTennisball } from "react-icons/io";
 
 import api from "../../services/api";
 
@@ -25,18 +26,13 @@ export default () => {
   }
 
   return (
-    <Box maxW={300} m="1em auto" textAlign="center">
-      <Image
-        m="auto"
-        size="48px"
-        src={require("../../images/logo192.png")}
-        alt=""
-      />
-      <Heading as="h2" size="lg" textAlign="center" my="4">
+    <Box maxW={{base: "auto", sm: "18rem"}} mt={4} mx={{base: 4, sm: "auto"}}>
+      <Box as={IoIosTennisball} size="2.5rem" mr={1} mx="auto" color="#c9f364"/>
+      <Heading as="h2" size="md" textAlign="center" my={4}>
         Criar conta
       </Heading>
-      <form onSubmit="">
-        <FormControl my="4" className="">
+      <Box as="form" onSubmit="">
+        <FormControl my={4}>
           <Input
             id="name"
             type="name"
@@ -47,7 +43,7 @@ export default () => {
             value={values.name}
           />
         </FormControl>
-        <FormControl mt="4" className="">
+        <FormControl mt={4}>
           <Input
             id="email"
             type="email"
@@ -58,7 +54,7 @@ export default () => {
             value={values.email}
           />
         </FormControl>
-        <FormControl mt="4" className="">
+        <FormControl mt={4}>
           <Input
             id="password"
             type="password"
@@ -69,11 +65,11 @@ export default () => {
             value={values.password}
           />
         </FormControl>
-        <Button type="submit" variantColor="green" width="100%" mt="4">
+        <Button type="submit" variantColor="green" width="100%" mt={8}>
           Criar conta
         </Button>
-      </form>
-      <Box mt="4">
+      </Box>
+      <Box mt={4} fontSize="sm" textAlign="center">
         <Link as={ReachLink} to="/login">
           Acessar conta existente
         </Link>

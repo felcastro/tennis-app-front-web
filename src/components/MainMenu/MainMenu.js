@@ -39,31 +39,29 @@ export default () => {
           currentPath === props.to ? colors.mainFontSelected[colorMode] : ""
         }
         onClick={props.onClick}
+        bg={currentPath === props.to ? colors.mainBgSelected[colorMode] : ""}
         _hover={{
           textDecoration: "none",
+          bg: colors.mainBgSelected[colorMode],
         }}
-        _focus={{}}
+        _focus={{ bg: colors.mainBgSelected[colorMode] }}
+        pl={4}
+        py={3}
+        display="flex"
       >
-        <PseudoBox
-          pl={4}
-          py={3}
-          bg={currentPath === props.to ? colors.mainBgSelected[colorMode] : ""}
-          _hover={{ bg: colors.mainBgSelected[colorMode] }}
-        >
-          <Stack isInline spacing={4} align="center">
-            <Box as={props.icon} fontSize="xl" />
-            <Box
-              flex={1}
-              fontWeight="medium"
-              fontSize="sm"
-              whiteSpace="nowrap"
-              overflowX="hidden"
-              textOverflow="ellipsis"
-            >
-              {props.title}
-            </Box>
-          </Stack>
-        </PseudoBox>
+        <Stack isInline spacing={4} align="center">
+          <Box as={props.icon} fontSize="xl" />
+          <Box
+            flex={1}
+            fontWeight="medium"
+            fontSize="sm"
+            whiteSpace="nowrap"
+            overflowX="hidden"
+            textOverflow="ellipsis"
+          >
+            {props.title}
+          </Box>
+        </Stack>
       </Link>
     );
   };
@@ -78,9 +76,9 @@ export default () => {
   };
 
   return (
-    <>
+    <Box as="nav">
       <MenuListItem icon={FaHome} to="/home" title="Home" />
-      <MenuListItem icon={FaSearch} to="/matches" title="Buscar Partida" />
+      <MenuListItem icon={FaSearch} to="/search-match" title="Buscar Partida" />
       <MenuListItem icon={FaStar} to="/matches" title="Minhas Partidas" />
       <MenuListItem icon={FaCalendarDay} to="/events" title="Eventos" />
       <MenuListItem icon={FaUsers} to="/players" title="Jogadores" />
@@ -90,13 +88,13 @@ export default () => {
         borderColor={colors.mainDivider[colorMode]}
       />
       <MenuListItem icon={FaUserCircle} to="/account" title="Minha Conta" />
-      <MenuListItem icon={FaCog} to="/configuration" title="Configurações" />
+      {/* <MenuListItem icon={FaCog} to="/configuration" title="Configurações" /> */}
       <MenuListItem
         icon={FaSignOutAlt}
         to="/"
         title="Sair"
         onClick={onLogoutClick}
       />
-    </>
+    </Box>
   );
 };

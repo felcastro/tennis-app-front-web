@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import {
   Avatar,
@@ -10,7 +10,8 @@ import {
   Link,
   Stack,
 } from "@chakra-ui/core";
-import { FaCommentDots, FaReact, FaBars } from "react-icons/fa";
+import { FaCommentDots } from "react-icons/fa";
+import { IoIosTennisball } from "react-icons/io";
 
 import MenuSwitchButton from "./MenuSwitchButton";
 
@@ -43,17 +44,17 @@ export default () => {
           <MenuSwitchButton />
           <Link as={RouterLink} to="/" _hover={{ textDecoration: "none" }}>
             <Flex align="center">
-              <Box as={FaReact} size="2.5rem" mr={1}></Box>
+              <Box as={IoIosTennisball} size="2.5rem" mr={1} color="#c9f364" />
               <Box display={{ base: "none", md: "block" }}>TennisApp</Box>
             </Flex>
           </Link>
         </Stack>
 
-        <Stack isInline spacing={5} align="center">
+        <Stack isInline spacing={{ base: 0, md: 5 }} align="center">
           <Link as={RouterLink} to="/">
             <Box as={FaCommentDots} size="2.5rem"></Box>
           </Link>
-          <Avatar src={user.pictureUrl} name={user.name} />
+          <Avatar src={user.pictureUrl} name={user.name} display={{ base: "none", md: "block" }}/>
         </Stack>
       </Flex>
     </Box>

@@ -6,7 +6,7 @@ export default () => {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <Box p={5}>
+    <Box maxW="46rem" px={4} py={3}>
       <Button size="sm" onClick={toggleColorMode}>
         Toggle Mode
       </Button>
