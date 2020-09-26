@@ -45,11 +45,11 @@ export default () => {
         dark: "rgba(226, 232, 240, .6)",
       },
       mainComponentBg: {
-        light: "gray.200",
+        light: "gray.100",
         dark: "gray.800",
       },
       mainCardLeftBg: {
-        light: "gray.400",
+        light: "gray.500",
         dark: "gray.300",
       },
     },

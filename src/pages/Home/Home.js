@@ -14,7 +14,7 @@ export default () => {
   const { colorMode } = useColorMode();
 
   const cards = [];
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 15; i += 1) {
     cards.push(Card(colors.mainComponentBg[colorMode]));
   }
 

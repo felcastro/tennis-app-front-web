@@ -7,7 +7,6 @@ import {
   Flex,
   FormControl,
   Heading,
-  Image,
   Input,
   Link,
   Stack,
@@ -24,7 +23,7 @@ export default () => {
   const [isLoading, setLoading] = useState(false);
   const [formError, setFormError] = useState("");
   const dispatch = useDispatch();
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = (data) => {
     setLoading(true);

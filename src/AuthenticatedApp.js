@@ -12,6 +12,9 @@ import SidebarMenu from "./components/SidebarMenu";
 import Home from "./pages/Home";
 import Matches from "./pages/Matches";
 // import Configuration from "./pages/Configuration";
+import Places from "./pages/Places";
+import Place from "./pages/Place";
+import BookCourt from "./pages/Place/BookCourt";
 import Account from "./pages/Account";
 import EditInfo from "./pages/Account/EditInfo";
 import SearchPreferences from "./pages/Account/SearchPreferences";
@@ -37,6 +40,9 @@ export default () => {
             <Route path="/home" component={Home} />
             <Route path="/matches" component={Matches} />
             {/* <Route path="/configuration" component={Configuration} /> */}
+            <Route path="/places" exact component={Places} />
+            <Route path="/places/:id" exact component={Place} />
+            <Route path="/places/:id/book-court" exact component={BookCourt} />
             <Route path="/account" exact component={Account} />
             <Route path="/account/edit-info" component={EditInfo} />
             <Route

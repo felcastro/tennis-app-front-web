@@ -21,7 +21,6 @@ import "../SidebarMenu/SidebarMenu.css";
 
 export default () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = React.useRef();
   const { colors } = useTheme();
   const { colorMode } = useColorMode();
 
@@ -33,13 +32,11 @@ export default () => {
         mr={4}
         cursor="pointer"
         onClick={onOpen}
-        ref={btnRef}
       />
       <Drawer
         isOpen={isOpen}
         placement="left"
         onClose={onClose}
-        finalFocusRef={btnRef}
         size="14rem"
       >
         <DrawerOverlay />

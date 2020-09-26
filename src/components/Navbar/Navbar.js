@@ -38,7 +38,7 @@ export default () => {
         align="center"
         justify="space-between"
         fontWeight="bold"
-        fontSize="xl"
+        fontSize={{ base: "2xl", md: "3xl" }}
       >
         <Stack isInline align="center">
           <MenuSwitchButton />
@@ -52,9 +52,13 @@ export default () => {
 
         <Stack isInline spacing={{ base: 0, md: 5 }} align="center">
           <Link as={RouterLink} to="/">
-            <Box as={FaCommentDots} size="2.5rem"></Box>
+            <Box as={FaCommentDots}></Box>
           </Link>
-          <Avatar src={user.pictureUrl} name={user.name} display={{ base: "none", md: "block" }}/>
+          <Avatar
+            src={user.pictureUrl}
+            name={user.name}
+            display={{ base: "none", md: "block" }}
+          />
         </Stack>
       </Flex>
     </Box>
