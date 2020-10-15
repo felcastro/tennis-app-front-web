@@ -15,9 +15,10 @@ import Matches from "./pages/Matches";
 import Places from "./pages/Places";
 import Place from "./pages/Place";
 import BookCourt from "./pages/Place/BookCourt";
+import EditPlace from "./pages/Place/EditPlace";
+import EditScheadule from "./pages/Place/EditScheadule";
 import Account from "./pages/Account";
 import EditInfo from "./pages/Account/EditInfo";
-import SearchPreferences from "./pages/Account/SearchPreferences";
 
 export default () => {
   const { colors } = useTheme();
@@ -43,12 +44,19 @@ export default () => {
             <Route path="/places" exact component={Places} />
             <Route path="/places/:id" exact component={Place} />
             <Route path="/places/:id/book-court" exact component={BookCourt} />
+            <Route path="/places/:id/edit" exact component={EditPlace} />
+            <Route
+              path="/places/:id/scheadules/new"
+              exact
+              component={EditScheadule}
+            />
+            <Route
+              path="/places/:id/scheadules/:scheaduleId/edit"
+              exact
+              component={EditScheadule}
+            />
             <Route path="/account" exact component={Account} />
             <Route path="/account/edit-info" component={EditInfo} />
-            <Route
-              path="/account/search-preferences"
-              component={SearchPreferences}
-            />
             <Redirect to="/home" />
           </Switch>
         </Flex>

@@ -1,12 +1,10 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Box, Flex, Avatar, IconButton, AspectRatioBox } from "@chakra-ui/core";
 import { FaPlus } from "react-icons/fa";
 
-export default (props) => {
-  const { match, isJoinable } = props;
-
-  const TennisCourtSlot = (props = {}) => {
-    const { player, isJoinable } = props;
+export default function TennisCourt({ match, isJoinable }) {
+  function TennisCourtSlot({ player }) {
     return (
       <Flex flex={1} align="center" justifyContent="center">
         {player ? (
@@ -24,16 +22,20 @@ export default (props) => {
         )}
       </Flex>
     );
+  }
+
+  TennisCourtSlot.propTypes = {
+    player: PropTypes.object.isRequired,
   };
 
   return (
     <AspectRatioBox ratio={2.1677}>
       <Flex border="1px solid" direction="column">
-        <Box h="12.48%" borderBottom="1px solid"></Box>
+        <Box h="12.48%" borderBottom="1px solid" />
         <Flex flex={1}>
           <Flex flex={1} borderRight="1px solid">
             <Flex w="46.17%" direction="column" borderRight="1px solid">
-              <Box flex={1}></Box>
+              <Box flex={1} />
               <TennisCourtSlot
                 player={match.teamOne[0]}
                 isJoinable={isJoinable}
@@ -52,12 +54,12 @@ export default (props) => {
                   isJoinable={isJoinable}
                 />
               </Flex>
-              <Box flex={1}></Box>
+              <Box flex={1} />
             </Flex>
           </Flex>
           <Flex flex={1} borderLeft="1px solid">
             <Flex flex={1} direction="column">
-              <Box flex={1} borderBottom="1px solid"></Box>
+              <Box flex={1} borderBottom="1px solid" />
               <Flex flex={1} align="center" justifyContent="center">
                 <TennisCourtSlot
                   player={match.teamTwo[1]}
@@ -72,12 +74,17 @@ export default (props) => {
                   isJoinable={isJoinable}
                 />
               </Flex>
-              <Box flex={1}></Box>
+              <Box flex={1} />
             </Flex>
           </Flex>
         </Flex>
-        <Box h="12.48%" borderTop="1px solid"></Box>
+        <Box h="12.48%" borderTop="1px solid" />
       </Flex>
     </AspectRatioBox>
   );
+}
+
+TennisCourt.propTypes = {
+  match: PropTypes.object.isRequired,
+  isJoinable: PropTypes.bool.isRequired,
 };

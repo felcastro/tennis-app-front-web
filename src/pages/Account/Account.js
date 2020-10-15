@@ -1,120 +1,57 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useForm } from "react-hook-form";
-import { Link as RouterLink } from "react-router-dom";
 import {
   useTheme,
   useColorMode,
   Box,
-  Button,
-  Divider,
-  Flex,
-  FormControl,
   Heading,
-  Input,
   Stack,
-  FormErrorMessage,
   FormLabel,
   Text,
   Select,
   Avatar,
   PseudoBox,
-  Link,
   List,
   ListItem,
   Switch,
+  useDisclosure,
 } from "@chakra-ui/core";
 import { FaCamera } from "react-icons/fa";
 
-export default () => {
-  const [isLoading, setLoading] = useState(false);
-  const [formError, setFormError] = useState("");
+import MenuGroupTitle from "./components/MenuGroupTitle";
+import MenuLink from "./components/MenuLink";
+import ImageUploader from "../../components/ImageUploader";
+import { userService } from "../../services";
+
+export default function Account() {
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const { colors } = useTheme();
   const { colorMode, toggleColorMode } = useColorMode();
-  const { register, handleSubmit, watch, errors } = useForm();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const onSubmit = (data) => {
-    setLoading(true);
-    // event.preventDefault();
-    // const { email, password } = data;
-    // api
-    //   .post("/auth/login", { email, password })
-    //   .then((response) => {
-    //     const user = {
-    //       ...response.data,
-    //       token: response.headers.authorization,
-    //     };
-    //     localStorage.setItem("user-data", JSON.stringify(user));
-    //     dispatch({
-    //       type: "SIGNIN_USER",
-    //       user,
-    //     });
-    //   })
-    //   .then(() => {
-    //     setLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     err.response.data.error
-    //       ? setFormError(err.response.data.error.message)
-    //       : setFormError("Ocorreu um erro inexperado, tente novamente");
-    //   });
-  };
+  async function onUpdateImage(data) {
+    try {
+      const responseData = await userService.updatePicture(user.id, data);
 
-  const MenuListLink = (props = {}) => {
-    return (
-      <ListItem
-        borderBottom="1px solid"
-        borderColor={colors.mainBorder[colorMode]}
-      >
-        <Link
-          as={RouterLink}
-          to={props.to}
-          py={4}
-          _hover={{
-            bg: colors.mainBgSelected[colorMode],
-            textDecoration: "none",
-          }}
-          _focus={{ bg: colors.mainBgSelected[colorMode] }}
-          display="block"
-        >
-          <Heading as="h3" fontSize={{ base: "lg", md: "xl" }}>
-            {props.title}
-          </Heading>
-          <Text as="p" lineHeight="none" fontSize="sm">
-            {props.subtitle}
-          </Text>
-        </Link>
-      </ListItem>
-    );
-  };
+      if (responseData.url) {
+        dispatch({
+          type: "UPDATE_USER",
+          user: { ...user, pictureUrl: `${responseData.url}?t=${Date.now()}` },
+        });
+        return true;
+      }
 
-  const MenuListTitle = (props = {}) => {
-    return (
-      <ListItem
-        py={2}
-        mt={6}
-        borderBottom="1px solid"
-        borderColor={colors.mainBorder[colorMode]}
-      >
-        <Heading
-          as="h2"
-          fontSize={{ base: "2xl", md: "3xl" }}
-          fontWeight="normal"
-        >
-          {props.title}
-        </Heading>
-        <Text as="p" lineHeight="none" fontSize="sm">
-          {props.subtitle}
-        </Text>
-      </ListItem>
-    );
-  };
+      return false;
+    } catch (err) {
+      return false;
+    }
+  }
 
   return (
     <Box maxW="46rem" px={4} py={3} flex={1}>
       <Stack align="center" spacing={4}>
-        <Box pos="relative">
+        <Box pos="relative" onClick={onOpen}>
           <Avatar
             size="2xl"
             style={{ objectFit: "fill !important" }}
@@ -138,27 +75,31 @@ export default () => {
             <Box as={FaCamera} margin="50% auto" opacity="1" fontSize="xl" />
           </PseudoBox>
         </Box>
+        <ImageUploader
+          upload={onUpdateImage}
+          isOpen={isOpen}
+          onClose={onClose}
+        />
         <Stack align="center" spacing={0}>
           <Box as="span" fontSize="lg">
             {user.name}
           </Box>
           <Box as="span" fontSize="sm">
-            Level {user.level}
+            {user.level ? `Level ${user.level.name}` : null}
           </Box>
         </Stack>
       </Stack>
       <List mt={4}>
-        <MenuListTitle
-          title="Informações do perfil"
-          subtitle="Gerencie os dados do seu perfil."
+        <MenuGroupTitle
+          title="Configurações do perfil"
+          subtitle="Gerencie os dados e preferências do seu perfil."
         />
-        <MenuListLink
+        <MenuLink
           to="/account/edit-info"
           title="Dados pessoais"
-          subtitle="Informe os dados relacionados a você, que serão visíveis a outros
-          jogadores."
+          subtitle="Informe os dados públicos relacionados a você, e suas preferências."
         />
-        <MenuListTitle
+        <MenuGroupTitle
           title="Preferencias do site"
           subtitle="Controle a forma como você experiencia esta plataforma."
         />
@@ -210,26 +151,21 @@ export default () => {
             </Select>
           </Stack>
         </ListItem>
-        <MenuListTitle
+        <MenuGroupTitle
           title="Gerenciamento da conta"
           subtitle="Gerencie a sua conta no TennisApp."
         />
-        <MenuListLink
-          to="/account/private-info"
-          title="Dados da conta"
+        <MenuLink
+          to="/account"
+          title="Dados privados"
           subtitle="Configure as informações privadas pertinentes a sua conta."
         />
-        <MenuListLink
-          to="/account/search-preferences"
-          title="Preferências de busca"
-          subtitle="Configure como o TennisApp vai encontrar jogadores e locais para você."
-        />
-        <MenuListLink
-          to="/account/delete-account"
+        <MenuLink
+          to="/account"
           title="Deletar conta"
           subtitle="Caso desejar, exclua sua conta permanentemente."
         />
       </List>
     </Box>
   );
-};
+}

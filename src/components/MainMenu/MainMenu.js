@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import { useLocation, Link as RouterLink } from "react-router-dom";
 import {
   Box,
@@ -7,7 +8,6 @@ import {
   Link,
   useTheme,
   Stack,
-  PseudoBox,
 } from "@chakra-ui/core";
 import { useDispatch } from "react-redux";
 import {
@@ -17,29 +17,28 @@ import {
   FaCalendarDay,
   FaUsers,
   FaMapMarkedAlt,
-  FaCog,
   FaSignOutAlt,
   FaUserCircle,
 } from "react-icons/fa";
 
-export default () => {
+import authService from "../../services/authService";
+
+export default function MainMenu() {
   const dispatch = useDispatch();
   const { colors } = useTheme();
   const { colorMode } = useColorMode();
 
-  const MenuListItem = (props = {}) => {
+  const MenuListItem = ({ title, icon, to, onClick }) => {
     const location = useLocation();
     const currentPath = `/${location.pathname.split("/")[1]}`;
 
     return (
       <Link
         as={RouterLink}
-        to={props.to}
-        color={
-          currentPath === props.to ? colors.mainFontSelected[colorMode] : ""
-        }
-        onClick={props.onClick}
-        bg={currentPath === props.to ? colors.mainBgSelected[colorMode] : ""}
+        to={to}
+        color={currentPath === to ? colors.mainFontSelected[colorMode] : ""}
+        onClick={onClick}
+        bg={currentPath === to ? colors.mainBgSelected[colorMode] : ""}
         _hover={{
           textDecoration: "none",
           bg: colors.mainBgSelected[colorMode],
@@ -50,7 +49,7 @@ export default () => {
         display="flex"
       >
         <Stack isInline spacing={4} align="center">
-          <Box as={props.icon} fontSize="xl" />
+          <Box as={icon} fontSize="xl" />
           <Box
             flex={1}
             fontWeight="medium"
@@ -59,19 +58,31 @@ export default () => {
             overflowX="hidden"
             textOverflow="ellipsis"
           >
-            {props.title}
+            {title}
           </Box>
         </Stack>
       </Link>
     );
   };
 
+  MenuListItem.defaultProps = {
+    onClick: null,
+  };
+
+  MenuListItem.propTypes = {
+    title: PropTypes.string.isRequired,
+    icon: PropTypes.element.isRequired,
+    to: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
+  };
+
   const onLogoutClick = (e) => {
     e.preventDefault();
-    localStorage.removeItem("user-data");
+    authService.signOut();
     dispatch({
       type: "SIGNIN_USER",
       user: null,
+      token: null,
     });
   };
 
@@ -97,4 +108,4 @@ export default () => {
       />
     </Box>
   );
-};
+}

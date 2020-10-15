@@ -1,11 +1,9 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
 import {
   Box,
   useDisclosure,
   Drawer,
   DrawerBody,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
@@ -16,29 +14,17 @@ import {
 import { FaBars } from "react-icons/fa";
 
 import MainMenu from "../MainMenu";
-
 import "../SidebarMenu/SidebarMenu.css";
 
-export default () => {
+export default function MenuSwitchButton() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colors } = useTheme();
   const { colorMode } = useColorMode();
 
   return (
     <Box display={{ base: "block", md: "none" }}>
-      <Box
-        as={FaBars}
-        fontSize="xl"
-        mr={4}
-        cursor="pointer"
-        onClick={onOpen}
-      />
-      <Drawer
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        size="14rem"
-      >
+      <Box as={FaBars} fontSize="xl" mr={4} cursor="pointer" onClick={onOpen} />
+      <Drawer isOpen={isOpen} placement="left" onClose={onClose} size="14rem">
         <DrawerOverlay />
         <DrawerContent
           bg={colors.sidebarBg[colorMode]}
@@ -53,4 +39,4 @@ export default () => {
       </Drawer>
     </Box>
   );
-};
+}

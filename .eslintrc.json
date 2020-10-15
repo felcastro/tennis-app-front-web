@@ -8,6 +8,7 @@
     "prettier/prettier": ["error"],
     "react/jsx-filename-extension": "off",
     "react/jsx-curly-newline": "off",
+    "react/jsx-wrap-multilines": "off",
     "react/forbid-prop-types": "off",
     "func-names": "off",
     "no-unused-vars": "warn",

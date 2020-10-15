@@ -1,39 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { Link as RouterLink, useParams } from "react-router-dom";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { Link as RouterLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
-  Tabs,
-  TabList,
-  Tab,
   Stack,
-  ListItem,
   Flex,
-  Spinner,
-  List,
-  SimpleGrid,
   Box,
-  Image,
   useTheme,
   useColorMode,
   Heading,
-  Link,
-  AspectRatioBox,
-  Divider,
   Button,
-  FormControl,
-  Input,
-  FormLabel,
-  Select,
-  Checkbox,
 } from "@chakra-ui/core";
 import { FaArrowLeft } from "react-icons/fa";
-import Calendar from "react-calendar";
 
 import "../../../components/Calendar/Calendar.css";
 
-import mockApi from "../../../services/mockApi";
-
-export default function Matches({ place, setPlace }) {
+export default function Schedules({ place, setPlace }) {
   const [isLoading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState(false);
   const [court, setCourt] = useState();
@@ -46,7 +28,7 @@ export default function Matches({ place, setPlace }) {
       <Box textAlign="left">
         <Button onClick={() => setPlace(null)}>
           <Stack isInline align="center">
-            <Box as={FaArrowLeft}></Box>
+            <Box as={FaArrowLeft} />
             <Box as="span">Voltar</Box>
           </Stack>
         </Button>
@@ -115,3 +97,8 @@ export default function Matches({ place, setPlace }) {
     </Stack>
   );
 }
+
+Schedules.propTypes = {
+  place: PropTypes.object.isRequired,
+  setPlace: PropTypes.func.isRequired,
+};

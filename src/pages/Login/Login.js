@@ -17,7 +17,7 @@ import { FaGoogle, FaFacebook } from "react-icons/fa";
 import { IoIosTennisball } from "react-icons/io";
 import { useDispatch } from "react-redux";
 
-import api from "../../services/api";
+import authService from "../../services/authService";
 
 export default () => {
   const [isLoading, setLoading] = useState(false);
@@ -25,32 +25,27 @@ export default () => {
   const dispatch = useDispatch();
   const { register, handleSubmit, errors } = useForm();
 
-  const onSubmit = (data) => {
+  async function onSubmit(data, e) {
     setLoading(true);
-    // event.preventDefault();
-    const { email, password } = data;
-    api
-      .post("/auth/login", { email, password })
-      .then((response) => {
-        const user = {
-          ...response.data,
-          token: response.headers.authorization,
-        };
-        localStorage.setItem("user-data", JSON.stringify(user));
-        dispatch({
-          type: "SIGNIN_USER",
-          user,
-        });
-      })
-      .then(() => {
-        setLoading(false);
-      })
-      .catch((err) => {
-        err.response.data.error
-          ? setFormError(err.response.data.error.message)
-          : setFormError("Ocorreu um erro inexperado, tente novamente");
+    e.preventDefault();
+
+    try {
+      const { user, token } = await authService.signIn(data);
+      dispatch({
+        type: "SIGNIN_USER",
+        user,
+        token,
       });
-  };
+    } catch (err) {
+      setFormError(
+        err.response.data
+          ? err.response.data.message
+          : "Ocorreu um erro inexperado, tente novamente"
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <Box
@@ -129,7 +124,7 @@ export default () => {
             id="password"
             type="password"
             name="password"
-            placeholder="Password"
+            placeholder="Senha"
             size="lg"
             ref={register({
               required: "Senha não pode estar em branco",

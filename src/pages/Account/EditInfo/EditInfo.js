@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { Link as RouterLink } from "react-router-dom";
 import {
   useTheme,
@@ -17,218 +17,249 @@ import {
   Heading,
   Link,
   Divider,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  Spinner,
+  FormHelperText,
 } from "@chakra-ui/core";
 import { FaArrowLeft } from "react-icons/fa";
 
+import userService from "../../../services/userService";
+import levelService from "../../../services/levelService";
+
 export default () => {
-  const [isLoading, setLoading] = useState(false);
-  const [formError, setFormError] = useState("");
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const { colors } = useTheme();
   const { colorMode } = useColorMode();
-  const { register, handleSubmit, watch, errors } = useForm();
+  const [isLoading, setLoading] = useState(false);
+  const [formError, setFormError] = useState(null);
+  const [loadError, setLoadError] = useState(false);
+  const [selectedLevel, setSelectedLevel] = useState(null);
+  const [levels, setLevels] = useState([]);
 
-  const onSubmit = (data, e) => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    errors,
+    control,
+    setValue,
+    getValues,
+    setError,
+  } = useForm();
+  const watchAllFields = watch(undefined, {
+    placesSearchDistance: user.placesSearchDistance,
+  });
+
+  async function onSubmit(data, e) {
     setLoading(true);
-    console.log(data)
     e.preventDefault();
-    // const { email, password } = data;
-    // api
-    //   .post("/auth/login", { email, password })
-    //   .then((response) => {
-    //     const user = {
-    //       ...response.data,
-    //       token: response.headers.authorization,
-    //     };
-    //     localStorage.setItem("user-data", JSON.stringify(user));
-    //     dispatch({
-    //       type: "SIGNIN_USER",
-    //       user,
-    //     });
-    //   })
-    //   .then(() => {
-    //     setLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     err.response.data.error
-    //       ? setFormError(err.response.data.error.message)
-    //       : setFormError("Ocorreu um erro inexperado, tente novamente");
-    //   });
-  };
+
+    try {
+      const updatedUser = await userService.update(user.id, data);
+      dispatch({
+        type: "UPDATE_USER",
+        user: updatedUser,
+      });
+    } catch (err) {
+      if (err.response.status === 400 || err.response.status === 409) {
+        err.response.data.errors.forEach((error) => {
+          setError(error.path, { type: "manual", message: error.message });
+        });
+      } else {
+        setFormError(err.response.data.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function loadLevels() {
+    setLoading(true);
+    setLoadError(false);
+
+    try {
+      setLevels(await levelService.list());
+      if (user.level) {
+        setValue("levelId", user.level.id);
+        setSelectedLevel(user.level);
+      }
+    } catch (err) {
+      setLoadError(true);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadLevels();
+  }, []);
 
   return (
-    <Box maxW="46rem" px={4} py={3} flex={1}>
+    <Stack maxW="46rem" px={{ base: 4, md: 0 }} py={3} flex={1}>
       <Box textAlign="left">
         <Link as={RouterLink} to="/account">
           <Stack isInline align="center">
-            <Box as={FaArrowLeft}></Box>
+            <Box as={FaArrowLeft} />
             <Box as="span">Voltar</Box>
           </Stack>
         </Link>
       </Box>
-      <Box textAlign="center" mt={4}>
-        <Heading
-          as="h2"
-          fontSize={{ base: "2xl", md: "3xl" }}
-          fontWeight="normal"
-        >
-          Dados Pessoais
-        </Heading>
+      <Flex
+        flex={1}
+        align="center"
+        justifyContent="center"
+        display={isLoading ? "flex" : "none"}
+      >
+        <Spinner size="lg" />
+      </Flex>
+      <Box display={isLoading || loadError ? "none" : "block"}>
+        <Stack as="form" onSubmit={handleSubmit(onSubmit)} spacing={4} mt={4}>
+          <Flex
+            px={4}
+            py={2}
+            align="center"
+            display={formError ? "block" : "none"}
+            bg="red.200"
+            border="1px solid"
+            borderColor="red.400"
+            borderRadius=".25em"
+          >
+            {formError}
+          </Flex>
+          <Box textAlign="center">
+            <Heading
+              as="h2"
+              fontSize={{ base: "2xl", md: "3xl" }}
+              fontWeight="normal"
+            >
+              Dados Pessoais
+            </Heading>
+            <Divider
+              orientation="horizontal"
+              borderColor={colors.mainDivider[colorMode]}
+            />
+          </Box>
+          <FormControl isInvalid={errors.name}>
+            <FormLabel htmlFor="name">Nome</FormLabel>
+            <Input
+              id="name"
+              name="name"
+              placeholder="Informe seu nome"
+              defaultValue={user.name}
+              ref={register({
+                required: "Nome não pode estar em branco",
+                min: {
+                  value: 4,
+                  message: "Nome deve conter pelo menos 4 caracteres",
+                },
+                max: {
+                  value: 100,
+                  message: "Nome deve conter até 100 caracteres",
+                },
+              })}
+            />
+            <FormErrorMessage>
+              {errors.name && errors.name.message}
+            </FormErrorMessage>
+          </FormControl>
+          <FormControl isInvalid={errors.birth}>
+            <FormLabel htmlFor="birth">Data de Nascimento</FormLabel>
+            <Input
+              id="birth"
+              name="birth"
+              placeholder="Informe sua data de nascimento"
+              defaultValue={user.birth}
+              type="date"
+              ref={register()}
+            />
+            <FormErrorMessage>
+              {errors.birth && errors.birth.message}
+            </FormErrorMessage>
+          </FormControl>
+          <FormControl isInvalid={errors.levelId}>
+            <FormLabel htmlFor="levelId">Nível base de jogo</FormLabel>
+            <Select
+              id="levelId"
+              name="levelId"
+              isDisabled={isLoading}
+              ref={register()}
+              onChange={() => {
+                setSelectedLevel(
+                  levels.find(
+                    (level) => level.id === parseInt(getValues("levelId"), 10)
+                  )
+                );
+              }}
+            >
+              {levels.map((level) => (
+                <option key={level.id} value={level.id}>
+                  {level.name}
+                </option>
+              ))}
+            </Select>
+            <FormHelperText id="level-helper">
+              {selectedLevel?.description}
+            </FormHelperText>
+            <FormErrorMessage>
+              {errors.levelId && errors.levelId.message}
+            </FormErrorMessage>
+          </FormControl>
+          <Box textAlign="center" mt={4}>
+            <Heading
+              as="h2"
+              fontSize={{ base: "2xl", md: "3xl" }}
+              fontWeight="normal"
+            >
+              Configurações
+            </Heading>
+            <Divider
+              orientation="horizontal"
+              borderColor={colors.mainDivider[colorMode]}
+            />
+          </Box>
+          <FormControl isInvalid={errors.placesSearchDistance}>
+            <FormLabel htmlFor="placesSearchDistance">
+              Distância máxima de busca de locais
+            </FormLabel>
+            <Stack isInline align="center" spacing={4}>
+              <Box as="span" minW="15%" whiteSpace="nowrap">
+                {`${watchAllFields.placesSearchDistance} km`}
+              </Box>
+              <Controller
+                as={
+                  <Slider>
+                    <SliderTrack />
+                    <SliderFilledTrack />
+                    <SliderThumb />
+                  </Slider>
+                }
+                control={control}
+                name="placesSearchDistance"
+                defaultValue={user.placesSearchDistance}
+                min={5}
+                max={100}
+              />
+            </Stack>
+            <FormErrorMessage>
+              {errors.placesSearchDistance &&
+                errors.placesSearchDistance.message}
+            </FormErrorMessage>
+          </FormControl>
+          <Button
+            isLoading={isLoading}
+            type="submit"
+            variantColor="green"
+            width="100%"
+            mt={4}
+          >
+            Salvar
+          </Button>
+        </Stack>
       </Box>
-      <Divider
-        orientation="horizontal"
-        borderColor={colors.mainDivider[colorMode]}
-      />
-      <Stack as="form" onSubmit={handleSubmit(onSubmit)} spacing={4} mt={4}>
-        <Flex
-          px={4}
-          py={2}
-          align="center"
-          display={formError ? "block" : "none"}
-          bg="red.200"
-          border="1px solid"
-          borderColor="red.400"
-          borderRadius=".25em"
-        >
-          {formError}
-        </Flex>
-        <FormControl isInvalid={errors.name}>
-          <FormLabel htmlFor="name">Nome</FormLabel>
-          <Input
-            id="name"
-            name="name"
-            placeholder="Informe seu nome"
-            defaultValue={user.name}
-            ref={register({
-              required: "Nome não pode estar em branco",
-              min: {
-                value: 6,
-                message: "Nome deve conter pelo menos 6 caracteres",
-              },
-              max: {
-                value: 255,
-                message: "Nome deve conter até 255 caracteres",
-              },
-            })}
-          />
-          <FormErrorMessage>
-            {errors.name && errors.name.message}
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl isInvalid={errors.dateOfBirth}>
-          <FormLabel htmlFor="dateOfBirth">Data de Nascimento</FormLabel>
-          <Input
-            id="dateOfBirth"
-            name="dateOfBirth"
-            placeholder="Informe sua data de nascimento"
-            defaultValue={new Date(user.dateOfBirth)
-              .toISOString()
-              .substr(0, 10)}
-            type="date"
-            ref={register()}
-          />
-          <FormErrorMessage>
-            {errors.dateOfBirth && errors.dateOfBirth.message}
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl isInvalid={errors.height}>
-          <FormLabel htmlFor="height">Altura (cm)</FormLabel>
-          <Input
-            id="height"
-            name="height"
-            type="number"
-            placeholder="Informe sua altura"
-            defaultValue={user.height}
-            ref={register({
-              pattern: {
-                value: /^[1-9]\d*$/,
-                message: "Informe um número inteiro",
-              },
-              min: { value: 1, message: "Valor baixo demais" },
-              max: { value: 250, message: "Valor alto demais" },
-            })}
-          />
-          <FormErrorMessage>
-            {errors.height && errors.height.message}
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl isInvalid={errors.weight}>
-          <FormLabel htmlFor="weight">Peso (kg)</FormLabel>
-          <Input
-            id="weight"
-            name="weight"
-            type="number"
-            placeholder="Informe seu peso"
-            defaultValue={user.weight}
-            ref={register({
-              pattern: {
-                value: /^[1-9]\d*$/,
-                message: "Informe um número inteiro",
-              },
-              min: { value: 1, message: "Valor baixo demais" },
-              max: { value: 1000, message: "Valor alto demais" },
-            })}
-          />
-          <FormErrorMessage>
-            {errors.weight && errors.weight.message}
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl isInvalid={errors.laterality}>
-          <FormLabel htmlFor="laterality">Lateralidade</FormLabel>
-          <Select
-            id="laterality"
-            name="laterality"
-            placeholder="Informe sua lateralidade"
-            defaultValue={user.laterality}
-          >
-            <option value="Destro">Destro</option>
-            <option value="Canhoto">Canhoto</option>
-          </Select>
-          <FormErrorMessage>
-            {errors.laterality && errors.laterality.message}
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl isInvalid={errors.backhand}>
-          <FormLabel htmlFor="backhand">Backhand</FormLabel>
-          <Select
-            id="backhand"
-            name="backhand"
-            placeholder="Informe seu backhand"
-            defaultValue={user.backhand}
-          >
-            <option value="Uma mão">Uma mão</option>
-            <option value="Duas mãos">Duas mãos</option>
-          </Select>
-          <FormErrorMessage>
-            {errors.backhand && errors.backhand.message}
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl isInvalid={errors.court}>
-          <FormLabel htmlFor="court">Quadra favorita</FormLabel>
-          <Select
-            id="court"
-            name="court"
-            placeholder="Informe sua quadra favorita"
-            defaultValue={user.court}
-          >
-            <option value="Saibro">Saibro</option>
-            <option value="Rápida">Rápida</option>
-            <option value="Sem preferência">Sem preferência</option>
-          </Select>
-          <FormErrorMessage>
-            {errors.court && errors.court.message}
-          </FormErrorMessage>
-        </FormControl>
-        <Button
-          isLoading={isLoading}
-          type="submit"
-          variantColor="green"
-          width="100%"
-          mt={4}
-        >
-          Salvar
-        </Button>
-      </Stack>
-    </Box>
+    </Stack>
   );
 };

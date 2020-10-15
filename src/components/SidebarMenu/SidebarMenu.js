@@ -1,14 +1,12 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import { Box, useColorMode, useTheme } from "@chakra-ui/core";
 
 import "./SidebarMenu.css";
 import MainMenu from "../MainMenu";
 
-export default () => {
+export default function SidebarMenu() {
   const { colors } = useTheme();
   const { colorMode } = useColorMode();
-  const isSidebarOpen = useSelector((state) => state.isSidebarOpen);
 
   return (
     <Box
@@ -33,4 +31,4 @@ export default () => {
       </Box>
     </Box>
   );
-};
+}

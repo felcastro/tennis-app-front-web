@@ -15,8 +15,6 @@ import {
 import api from "../../services/api";
 import MatchCard from "./MatchCard";
 
-import mockApi from "../../services/mockApi";
-
 export default function Matches() {
   const [isLoading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState(false);
@@ -24,17 +22,6 @@ export default function Matches() {
   const user = useSelector((state) => state.user);
 
   const status = ["open", "pending", "closed"];
-
-  mockApi
-    .get("/api/places", {
-      headers: {
-        Authorization: user.token,
-        "Content-Type": "application/json",
-      },
-    })
-    .then((response) => {
-      console.log(response.data);
-    });
 
   const onTabIndexChange = (index) => {
     setLoading(true);
@@ -64,6 +51,7 @@ export default function Matches() {
         setLoading(false);
       })
       .catch(() => {
+        setLoading(false);
         setLoadError(true);
       });
   };

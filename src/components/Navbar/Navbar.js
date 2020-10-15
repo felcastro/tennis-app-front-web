@@ -15,7 +15,7 @@ import { IoIosTennisball } from "react-icons/io";
 
 import MenuSwitchButton from "./MenuSwitchButton";
 
-export default () => {
+export default function Navbar() {
   const user = useSelector((state) => state.user);
   const { colors } = useTheme();
   const { colorMode } = useColorMode();
@@ -52,7 +52,7 @@ export default () => {
 
         <Stack isInline spacing={{ base: 0, md: 5 }} align="center">
           <Link as={RouterLink} to="/">
-            <Box as={FaCommentDots}></Box>
+            <Box as={FaCommentDots} />
           </Link>
           <Avatar
             src={user.pictureUrl}
@@ -63,4 +63,4 @@ export default () => {
       </Flex>
     </Box>
   );
-};
+}
