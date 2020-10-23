@@ -71,7 +71,7 @@ export default function MainMenu() {
 
   MenuListItem.propTypes = {
     title: PropTypes.string.isRequired,
-    icon: PropTypes.element.isRequired,
+    icon: PropTypes.func.isRequired,
     to: PropTypes.string.isRequired,
     onClick: PropTypes.func,
   };

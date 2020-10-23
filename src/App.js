@@ -28,6 +28,10 @@ export default () => {
         light: "gray.200",
         dark: "gray.700",
       },
+      mainBgInactive: {
+        light: "gray.300",
+        dark: "gray.900",
+      },
       mainFont: {
         light: "gray.600",
         dark: "gray.300",
@@ -35,6 +39,10 @@ export default () => {
       mainFontSelected: {
         light: "gray.900",
         dark: "gray.50",
+      },
+      mainFontInactive: {
+        light: "gray.500",
+        dark: "gray.500",
       },
       mainBorder: {
         light: "rgba(160, 174, 192, .4)",
