@@ -72,18 +72,16 @@ function TimeSlot({
       fontSize={{ base: "auto", xl: "sm" }}
       cursor="pointer"
       userSelect="none"
-      bg={() => {
-        if (selected) {
-          return styles.bgSelected[colorMode];
-        }
-        if (active) {
-          return colors.mainComponentBg[colorMode];
-        }
-        return colors.mainBgInactive[colorMode];
-      }}
+      bg={
+        selected
+          ? styles.bgSelected[colorMode]
+          : active
+          ? colors.mainComponentBg[colorMode]
+          : colors.mainBgInactive[colorMode]
+      }
       touchAction="none"
       color={active ? "auto" : colors.mainFontInactive[colorMode]}
-      onMouse={() => onMouseDown()}
+      onMouseDown={() => onMouseDown()}
       onMouseEnter={() => onMouseEnter()}
     >
       <Flex align="center" justifyContent="space-between">
