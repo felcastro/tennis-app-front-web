@@ -168,6 +168,11 @@ export default function EditScheadule() {
             onMouseUp={() =>
               window.innerWidth >= 768 ? setMouseDown(false) : null
             }
+            onMouseLeave={() =>
+              isMouseDown && window.innerWidth >= 768
+                ? setMouseDown(false)
+                : null
+            }
           >
             {weekDays.map((wd) => (
               <Stack key={wd.id} shouldWrapChildren>
