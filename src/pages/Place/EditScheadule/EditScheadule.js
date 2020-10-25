@@ -158,6 +158,7 @@ export default function EditScheadule() {
             isLoading={isLoading}
             isOpen={isOpen}
             onClose={onClose}
+            selectedTimeSlots={scheadule.timeSlots.filter((ts) => ts.selected)}
           />
           <SimpleGrid
             columns={{ base: 1, md: 2, xl: 7 }}
