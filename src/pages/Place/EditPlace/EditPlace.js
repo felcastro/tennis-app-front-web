@@ -87,7 +87,7 @@ export default function EditPlace() {
       )}
       {!loadError && place && (
         <Box px={4} mt={2}>
-          <PlaceInfoForm place={place} />
+          <PlaceInfoForm place={place} setPlace={setPlace} />
           <Stack>
             <Box textAlign="center" mt={8}>
               <Heading

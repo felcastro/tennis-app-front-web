@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import {
   Stack,
@@ -17,25 +18,30 @@ import {
 
 import placeService from "../../../../services/placeService";
 
-export default function PlaceInfoForm({ place }) {
+export default function PlaceInfoForm({ place, setPlace }) {
   const [isLoading, setLoading] = useState(false);
   const { colors } = useTheme();
   const { colorMode } = useColorMode();
 
   const [formError, setFormError] = useState(null);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    errors,
-    control,
-    setValue,
-    getValues,
-    setError,
-  } = useForm();
+  const { register, handleSubmit, errors, setError } = useForm();
 
-  async function onSubmit(data, e) {
+  async function onSubmit(data) {
     setLoading(true);
+    try {
+      const updatedPlace = await placeService.update(place.id, data);
+      setPlace(updatedPlace);
+    } catch (err) {
+      if (err.response.status === 400 || err.response.status === 409) {
+        err.response.data.errors.forEach((error) => {
+          setError(error.path, { type: "manual", message: error.message });
+        });
+      } else {
+        setFormError(err.response.data.message);
+      }
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -178,3 +184,8 @@ export default function PlaceInfoForm({ place }) {
     </Stack>
   );
 }
+
+PlaceInfoForm.propTypes = {
+  place: PropTypes.object.isRequired,
+  setPlace: PropTypes.func.isRequired,
+};
