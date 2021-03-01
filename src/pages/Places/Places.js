@@ -7,7 +7,7 @@ import {
   Flex,
   Spinner,
   SimpleGrid,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 import PlaceCard from "./components/PlaceCard";
 import placeService from "../../services/placeService";

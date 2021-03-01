@@ -23,7 +23,7 @@ import {
   SliderThumb,
   Spinner,
   FormHelperText,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { FaArrowLeft } from "react-icons/fa";
 
 import userService from "../../../services/userService";
@@ -252,7 +252,7 @@ export default () => {
           <Button
             isLoading={isLoading}
             type="submit"
-            variantColor="green"
+            colorScheme="green"
             width="100%"
             mt={4}
           >

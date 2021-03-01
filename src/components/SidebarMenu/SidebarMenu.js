@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, useColorMode, useTheme } from "@chakra-ui/core";
+import { Box, useColorMode, useTheme } from "@chakra-ui/react";
 
 import "./SidebarMenu.css";
 import MainMenu from "../MainMenu";

@@ -14,10 +14,10 @@ import {
   useColorMode,
   Heading,
   Link,
-  AspectRatioBox,
+  AspectRatio,
   Divider,
   Button,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import {
   FaEnvelope,
   FaPhone,
@@ -58,15 +58,15 @@ export default function Place() {
   }, []);
 
   return (
-    <Stack maxW="46rem" flex={1} pb={4}>
+    <Flex maxW="46rem" flex={1} pb={4} flexDirection="column">
       {isLoading && (
         <Flex flex={1} align="center" justifyContent="center">
           <Spinner size="lg" />
         </Flex>
       )}
       {!isLoading && !loadError && (
-        <Box>
-          <AspectRatioBox w="100%" ratio={2.5}>
+        <>
+          <AspectRatio w="100%" ratio={2.5}>
             <Image
               src={place.pictureUrl}
               alt=""
@@ -74,8 +74,8 @@ export default function Place() {
               h="100%"
               w="100%"
             />
-          </AspectRatioBox>
-          <Stack mt={2} px={4} spacing={2}>
+          </AspectRatio>
+          <Box mt={2} px={4}>
             <Box textAlign="center" lineHeight="none">
               <Heading
                 as="h1"
@@ -87,20 +87,20 @@ export default function Place() {
               <Box as="span" fontSize={{ base: "xs", md: "sm" }}>
                 {place.address}
               </Box>
-              <Divider />
             </Box>
+            <Divider my={2} />
             {place.admins?.some((u) => u.id === user.id) && (
               <Flex justifyContent="flex-end">
                 <Button
                   as={RouterLink}
                   to={`/places/${place.id}/edit`}
-                  variantColor="yellow"
+                  colorScheme="yellow"
                 >
                   Editar
                 </Button>
               </Flex>
             )}
-            <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={4}>
+            <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={4} mt={2}>
               <Box
                 bg={colors.mainComponentBg[colorMode]}
                 p={2}
@@ -183,12 +183,12 @@ export default function Place() {
                   <Button
                     as={RouterLink}
                     to={`/places/${place.id}/book-court`}
-                    variantColor="green"
+                    colorScheme="green"
                   >
                     Reservar Horário
                   </Button>
                 </Flex>
-                <Divider />
+                <Divider my={2} />
                 <Stack spacing={8}>
                   {sports.map((s) => (
                     <Box>
@@ -259,9 +259,9 @@ export default function Place() {
                 </Stack>
               </Box>
             )}
-          </Stack>
-        </Box>
+          </Box>
+        </>
       )}
-    </Stack>
+    </Flex>
   );
 }

@@ -5,7 +5,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import { Box, Flex, useColorMode, useTheme } from "@chakra-ui/core";
+import { Box, Flex, useColorMode, useTheme } from "@chakra-ui/react";
 
 import Navbar from "./components/Navbar";
 import SidebarMenu from "./components/SidebarMenu";

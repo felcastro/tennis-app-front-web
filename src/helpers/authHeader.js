@@ -1,6 +1,4 @@
-export default (contentType = "application/json") => {
-  return {
-    Authorization: localStorage.getItem("user-token"),
-    "Content-Type": contentType,
-  };
-};
+export default (contentType = "application/json") => ({
+  Authorization: localStorage.getItem("user-token"),
+  "Content-Type": contentType,
+});

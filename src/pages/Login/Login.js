@@ -11,7 +11,7 @@ import {
   Link,
   Stack,
   FormErrorMessage,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { Link as ReachLink } from "react-router-dom";
 import { FaGoogle, FaFacebook } from "react-icons/fa";
 import { IoIosTennisball } from "react-icons/io";
@@ -67,7 +67,7 @@ export default () => {
         <Button
           isDisabled={isLoading}
           leftIcon={FaGoogle}
-          variantColor="blue"
+          colorScheme="blue"
           variant="outline"
           flex="1 1 0px"
         >
@@ -76,31 +76,32 @@ export default () => {
         <Button
           isDisabled={isLoading}
           leftIcon={FaFacebook}
-          variantColor="blue"
+          colorScheme="blue"
           variant="outline"
           flex="1 1 0px"
         >
           Facebook
         </Button>
       </Stack>
-      <Stack isInline py={4} align="center" justify="center" spacing={2}>
+      <Stack isInline py={8} align="center" justify="center" spacing={2}>
         <Divider orientation="horizontal" flex={1} m={0} />
         <Box as="span">ou</Box>
         <Divider orientation="horizontal" flex={1} m={0} />
       </Stack>
       <Stack as="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
-        <Flex
-          px={4}
-          py={2}
-          align="center"
-          display={formError ? "block" : "none"}
-          bg="red.200"
-          border="1px solid"
-          borderColor="red.400"
-          borderRadius=".25em"
-        >
-          {formError}
-        </Flex>
+        {formError && (
+          <Flex
+            px={4}
+            py={2}
+            align="center"
+            bg="red.200"
+            border="1px solid"
+            borderColor="red.400"
+            borderRadius=".25em"
+          >
+            {formError}
+          </Flex>
+        )}
         <FormControl isInvalid={errors.email}>
           <Input
             id="email"
@@ -137,7 +138,7 @@ export default () => {
         <Button
           isLoading={isLoading}
           type="submit"
-          variantColor="green"
+          colorScheme="green"
           width="100%"
           mt={4}
         >
@@ -148,7 +149,7 @@ export default () => {
         <Link as={ReachLink} to="/register">
           Criar uma conta
         </Link>
-        <Divider orientation="vertical" alignSelf="stretch" />
+        <Divider orientation="vertical" alignSelf="stretch" flex={1} />
         <Link href="/login">Esqueceu sua senha?</Link>
       </Flex>
     </Box>

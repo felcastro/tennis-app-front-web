@@ -13,7 +13,7 @@ import {
   useDisclosure,
   useTheme,
   useColorMode,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { FaArrowLeft } from "react-icons/fa";
 
 import placeService from "../../../services/placeService";
@@ -138,7 +138,7 @@ export default function EditScheadule() {
           >
             <Button
               isLoading={isLoading}
-              variantColor="yellow"
+              colorScheme="yellow"
               alignSelf="flex-start"
               onClick={onOpen}
             >
@@ -146,9 +146,8 @@ export default function EditScheadule() {
             </Button>
             <Button
               isLoading={isLoading}
-              variantColor="green"
+              colorScheme="green"
               alignSelf="flex-start"
-              onClick={onOpen}
             >
               {scheaduleId ? "Salvar" : "Criar"}
             </Button>
@@ -205,37 +204,6 @@ export default function EditScheadule() {
               </Stack>
             ))}
           </SimpleGrid>
-          {/* <Stack display={{ base: "flex", md: "none" }} spacing={4}>
-            {weekDays.map((wd) => (
-              <Stack key={wd.id} shouldWrapChildren>
-                <Flex
-                  p={2}
-                  bg={colors.mainComponentBg[colorMode]}
-                  align="center"
-                  userSelect="none"
-                  justifyContent="center"
-                >
-                  {wd.name}
-                </Flex>
-                {scheadule.timeSlots
-                  .filter((ts) => ts.weekDay === wd.id)
-                  .map((ts) => (
-                    <TimeSlot
-                      key={ts.id}
-                      id={ts.id}
-                      price={ts.price}
-                      time={ts.time}
-                      active={ts.active}
-                      selected={ts.selected}
-                      updateTimeSlot={setScheadule}
-                      isMouseDown={isMouseDown}
-                      isMouseSelecting={isMouseSelecting}
-                      setMouseSelecting={setMouseSelecting}
-                    />
-                  ))}
-              </Stack>
-            ))}
-          </Stack> */}
         </Stack>
       )}
     </Stack>

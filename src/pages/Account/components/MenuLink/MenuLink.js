@@ -8,7 +8,7 @@ import {
   Link,
   useTheme,
   useColorMode,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 export default function MenuLink({ to, title, subtitle }) {
   const { colors } = useTheme();

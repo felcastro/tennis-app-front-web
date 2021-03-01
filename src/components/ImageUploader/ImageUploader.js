@@ -10,7 +10,7 @@ import {
   ModalCloseButton,
   ModalBody,
   Stack,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 export default function ImageUploader({ upload, isOpen, onClose }) {
   const [isLoading, setLoading] = useState(false);
@@ -50,7 +50,7 @@ export default function ImageUploader({ upload, isOpen, onClose }) {
               </Box>
             )}
             <Button
-              variantColor="green"
+              colorScheme="green"
               isLoading={isLoading}
               onClick={() => {
                 inputFile.current.click();

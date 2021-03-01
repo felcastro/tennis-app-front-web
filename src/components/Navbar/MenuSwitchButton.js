@@ -10,7 +10,7 @@ import {
   DrawerCloseButton,
   useTheme,
   useColorMode,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { FaBars } from "react-icons/fa";
 
 import MainMenu from "../MainMenu";
@@ -22,21 +22,29 @@ export default function MenuSwitchButton() {
   const { colorMode } = useColorMode();
 
   return (
-    <Box display={{ base: "block", md: "none" }}>
-      <Box as={FaBars} fontSize="xl" mr={4} cursor="pointer" onClick={onOpen} />
-      <Drawer isOpen={isOpen} placement="left" onClose={onClose} size="14rem">
-        <DrawerOverlay />
-        <DrawerContent
-          bg={colors.sidebarBg[colorMode]}
-          color={colors.mainFont[colorMode]}
-        >
-          <DrawerCloseButton />
-          <DrawerHeader>Menu</DrawerHeader>
-          <DrawerBody p={0} className="custom-scroll" overflowY="auto">
-            <MainMenu />
-          </DrawerBody>
-        </DrawerContent>
+    <>
+      <Box
+        as={FaBars}
+        display={{ base: "block", md: "none" }}
+        fontSize="xl"
+        cursor="pointer"
+        onClick={onOpen}
+      />
+      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+        <DrawerOverlay>
+          <DrawerContent
+            bg={colors.sidebarBg[colorMode]}
+            color={colors.mainFont[colorMode]}
+            width="14rem !important"
+          >
+            <DrawerCloseButton />
+            <DrawerHeader>Menu</DrawerHeader>
+            <DrawerBody p={0} className="custom-scroll">
+              <MainMenu onClose={onClose} />
+            </DrawerBody>
+          </DrawerContent>
+        </DrawerOverlay>
       </Drawer>
-    </Box>
+    </>
   );
 }

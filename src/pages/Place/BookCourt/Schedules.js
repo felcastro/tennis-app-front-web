@@ -10,7 +10,7 @@ import {
   useColorMode,
   Heading,
   Button,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { FaArrowLeft } from "react-icons/fa";
 
 import "../../../components/Calendar/Calendar.css";
@@ -85,7 +85,7 @@ export default function Schedules({ place, setPlace }) {
             as={RouterLink}
             isLoading={isLoading}
             isDisabled={court === undefined}
-            variantColor="green"
+            colorScheme="green"
             alignSelf={{ base: "flex-end", md: "auto" }}
             mt={4}
             w="100%"

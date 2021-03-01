@@ -1,13 +1,6 @@
 import React, { memo } from "react";
 import PropTypes from "prop-types";
-import {
-  Flex,
-  Stack,
-  Box,
-  useTheme,
-  useColorMode,
-  PseudoBox,
-} from "@chakra-ui/core";
+import { Flex, Stack, Box, useTheme, useColorMode } from "@chakra-ui/react";
 import { FaBan } from "react-icons/fa";
 
 function TimeSlot({
@@ -62,7 +55,7 @@ function TimeSlot({
   }
 
   return (
-    <PseudoBox
+    <Box
       _hover={{
         bg: selected ? null : colors.mainBgSelected[colorMode],
       }}
@@ -73,6 +66,7 @@ function TimeSlot({
       cursor="pointer"
       userSelect="none"
       bg={
+        // eslint-disable-next-line no-nested-ternary
         selected
           ? styles.bgSelected[colorMode]
           : active
@@ -102,7 +96,7 @@ function TimeSlot({
           </Box>
         )}
       </Flex>
-    </PseudoBox>
+    </Box>
   );
 }
 
@@ -122,8 +116,8 @@ TimeSlot.propTypes = {
   setMouseSelecting: PropTypes.func.isRequired,
 };
 
-export default memo(TimeSlot, (prev, next) => {
-  return (
+export default memo(
+  TimeSlot,
+  (prev, next) =>
     prev.selected === next.selected && prev.isMouseDown === next.isMouseDown
-  );
-});
+);

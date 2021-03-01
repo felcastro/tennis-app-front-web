@@ -14,7 +14,7 @@ import {
   Input,
   FormErrorMessage,
   FormLabel,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 import placeService from "../../../../services/placeService";
 
@@ -175,7 +175,7 @@ export default function PlaceInfoForm({ place, setPlace }) {
       <Button
         isLoading={isLoading}
         type="submit"
-        variantColor="green"
+        colorScheme="green"
         width="100%"
         mt={4}
       >

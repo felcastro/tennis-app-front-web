@@ -10,7 +10,7 @@ import {
   Heading,
   Link,
   Badge,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 export default function PlaceCard({ place }) {
   const { colors } = useTheme();
@@ -40,7 +40,7 @@ export default function PlaceCard({ place }) {
         </Heading>
         <Stack isInline spacing={2} mt={2}>
           {sports.map((s) => (
-            <Badge variantColor="green" key={s}>
+            <Badge colorScheme="green" key={s}>
               {s}
             </Badge>
           ))}

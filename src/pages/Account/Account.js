@@ -6,17 +6,15 @@ import {
   Box,
   Heading,
   Stack,
-  FormLabel,
   Text,
   Select,
   Avatar,
-  PseudoBox,
   List,
   ListItem,
-  Switch,
   useDisclosure,
-} from "@chakra-ui/core";
-import { FaCamera } from "react-icons/fa";
+  Flex,
+} from "@chakra-ui/react";
+import { FaCamera, FaMoon, FaSun } from "react-icons/fa";
 
 import MenuGroupTitle from "./components/MenuGroupTitle";
 import MenuLink from "./components/MenuLink";
@@ -58,7 +56,7 @@ export default function Account() {
             src={user.pictureUrl}
             name={user.name}
           />
-          <PseudoBox
+          <Box
             pos="absolute"
             h="100%"
             w="100%"
@@ -73,7 +71,7 @@ export default function Account() {
             _hover={{ opacity: ".6" }}
           >
             <Box as={FaCamera} margin="50% auto" opacity="1" fontSize="xl" />
-          </PseudoBox>
+          </Box>
         </Box>
         <ImageUploader
           upload={onUpdateImage}
@@ -109,28 +107,27 @@ export default function Account() {
           borderColor={colors.mainBorder[colorMode]}
           onClick={toggleColorMode}
           cursor="pointer"
+          _hover={{
+            bg: colors.mainBgSelected[colorMode],
+            textDecoration: "none",
+          }}
+          _focus={{ bg: colors.mainBgSelected[colorMode] }}
         >
-          <Stack isInline align="center" justify="space-between">
+          <Flex align="center" justify="space-between">
             <Box>
               <Heading as="h3" fontSize={{ base: "lg", md: "xl" }}>
                 Tema de cores
               </Heading>
               <Text as="p" lineHeight="none" fontSize="sm">
-                Selecione entre o tema de cores claro ou escuro.
+                Alterne entre o tema de cores claro ou escuro.
               </Text>
             </Box>
-            <Stack isInline>
-              <FormLabel htmlFor="selectedColorMode">
-                {colorMode === "dark" ? "Escuro" : "Claro"}
-              </FormLabel>
-              <Switch
-                id="selectedColorMode"
-                size="lg"
-                isChecked={colorMode === "dark"}
-                onChange={toggleColorMode}
-              />
-            </Stack>
-          </Stack>
+            <Box
+              as={colorMode === "dark" ? FaSun : FaMoon}
+              fontSize="xl"
+              mr={2}
+            />
+          </Flex>
         </ListItem>
         <ListItem
           py={4}

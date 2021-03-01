@@ -8,7 +8,7 @@ import {
   Link,
   useTheme,
   Stack,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import {
   FaSearch,
@@ -23,7 +23,7 @@ import {
 
 import authService from "../../services/authService";
 
-export default function MainMenu() {
+export default function MainMenu({ onClose }) {
   const dispatch = useDispatch();
   const { colors } = useTheme();
   const { colorMode } = useColorMode();
@@ -86,26 +86,83 @@ export default function MainMenu() {
     });
   };
 
+  const MenuMainItems = () => {
+    const items = [
+      { icon: FaHome, to: "/home", title: "Home", onClick: onClose },
+      {
+        icon: FaSearch,
+        to: "/search-match",
+        title: "Buscar Partida",
+        onClick: onClose,
+      },
+      {
+        icon: FaStar,
+        to: "/matches",
+        title: "Minhas Partidas",
+        onClick: onClose,
+      },
+      {
+        icon: FaCalendarDay,
+        to: "/events",
+        title: "Eventos",
+        onClick: onClose,
+      },
+      { icon: FaUsers, to: "/players", title: "Jogadores", onClick: onClose },
+      {
+        icon: FaMapMarkedAlt,
+        to: "/places",
+        title: "Locais",
+        onClick: onClose,
+      },
+    ];
+
+    return items.map((item) => (
+      <MenuListItem
+        icon={item.icon}
+        to={item.to}
+        title={item.title}
+        onClick={item.onClick}
+      />
+    ));
+  };
+
+  const MenuAccountItems = () => {
+    const items = [
+      {
+        icon: FaUserCircle,
+        to: "/account",
+        title: "Minha Conta",
+        onClick: onClose,
+      },
+      { icon: FaSignOutAlt, to: "/", title: "Sair", onClick: onLogoutClick },
+    ];
+
+    return items.map((item) => (
+      <MenuListItem
+        icon={item.icon}
+        to={item.to}
+        title={item.title}
+        onClick={item.onClick}
+      />
+    ));
+  };
+
   return (
     <Box as="nav">
-      <MenuListItem icon={FaHome} to="/home" title="Home" />
-      <MenuListItem icon={FaSearch} to="/search-match" title="Buscar Partida" />
-      <MenuListItem icon={FaStar} to="/matches" title="Minhas Partidas" />
-      <MenuListItem icon={FaCalendarDay} to="/events" title="Eventos" />
-      <MenuListItem icon={FaUsers} to="/players" title="Jogadores" />
-      <MenuListItem icon={FaMapMarkedAlt} to="/places" title="Locais" />
+      <MenuMainItems />
       <Divider
         orientation="horizontal"
         borderColor={colors.mainDivider[colorMode]}
       />
-      <MenuListItem icon={FaUserCircle} to="/account" title="Minha Conta" />
-      {/* <MenuListItem icon={FaCog} to="/configuration" title="Configurações" /> */}
-      <MenuListItem
-        icon={FaSignOutAlt}
-        to="/"
-        title="Sair"
-        onClick={onLogoutClick}
-      />
+      <MenuAccountItems />
     </Box>
   );
 }
+
+MainMenu.defaultProps = {
+  onClose: null,
+};
+
+MainMenu.propTypes = {
+  onClose: PropTypes.func,
+};

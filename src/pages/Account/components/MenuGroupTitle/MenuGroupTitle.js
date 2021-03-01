@@ -6,7 +6,7 @@ import {
   ListItem,
   useTheme,
   useColorMode,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 export default function MenuGroupTitle({ title, subtitle }) {
   const { colors } = useTheme();

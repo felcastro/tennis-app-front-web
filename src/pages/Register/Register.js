@@ -10,7 +10,7 @@ import {
   Link,
   Stack,
   Flex,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { Link as ReachLink } from "react-router-dom";
 import { IoIosTennisball } from "react-icons/io";
 import { useDispatch } from "react-redux";
@@ -163,7 +163,7 @@ export default () => {
         <Button
           type="submit"
           isLoading={isLoading}
-          variantColor="green"
+          colorScheme="green"
           width="100%"
           mt={4}
         >

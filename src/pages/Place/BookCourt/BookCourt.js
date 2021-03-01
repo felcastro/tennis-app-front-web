@@ -12,7 +12,7 @@ import {
   FormLabel,
   Select,
   Checkbox,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import Calendar from "react-calendar";
 import Schedules from "./Schedules";
 
@@ -102,7 +102,7 @@ export default function BookCourt() {
               <Button
                 as={RouterLink}
                 isLoading={isLoading}
-                variantColor="green"
+                colorScheme="green"
                 alignSelf={{ base: "flex-end", md: "auto" }}
                 mt={4}
                 w="100%"

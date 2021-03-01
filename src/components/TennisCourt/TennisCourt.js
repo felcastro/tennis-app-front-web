@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Box, Flex, Avatar, IconButton, AspectRatioBox } from "@chakra-ui/core";
+import { Box, Flex, Avatar, IconButton, AspectRatio } from "@chakra-ui/react";
 import { FaPlus } from "react-icons/fa";
 
 export default function TennisCourt({ match, isJoinable }) {
@@ -15,7 +15,7 @@ export default function TennisCourt({ match, isJoinable }) {
               icon={FaPlus}
               isRound
               size="lg"
-              variantColor="green"
+              colorScheme="green"
               variant="outline"
             />
           )
@@ -29,7 +29,7 @@ export default function TennisCourt({ match, isJoinable }) {
   };
 
   return (
-    <AspectRatioBox ratio={2.1677}>
+    <AspectRatio ratio={2.1677}>
       <Flex border="1px solid" direction="column">
         <Box h="12.48%" borderBottom="1px solid" />
         <Flex flex={1}>
@@ -80,7 +80,7 @@ export default function TennisCourt({ match, isJoinable }) {
         </Flex>
         <Box h="12.48%" borderTop="1px solid" />
       </Flex>
-    </AspectRatioBox>
+    </AspectRatio>
   );
 }
 

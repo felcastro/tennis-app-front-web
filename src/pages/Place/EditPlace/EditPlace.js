@@ -10,16 +10,18 @@ import {
   useColorMode,
   Heading,
   Link,
-  AspectRatioBox,
+  AspectRatio,
   Divider,
   Button,
   IconButton,
-} from "@chakra-ui/core";
-import { FaArrowLeft, FaPlus } from "react-icons/fa";
+  useDisclosure,
+} from "@chakra-ui/react";
+import { FaArrowLeft, FaPlus, FaCamera } from "react-icons/fa";
 
 import placeService from "../../../services/placeService";
 import sportService from "../../../services/sportService";
 import PlaceInfoForm from "./PlaceInfoForm";
+import ImageUploader from "../../../components/ImageUploader";
 
 export default function EditPlace() {
   const [isLoading, setLoading] = useState(false);
@@ -29,6 +31,7 @@ export default function EditPlace() {
   const { colors } = useTheme();
   const { colorMode } = useColorMode();
   const { id } = useParams();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   async function loadPlace() {
     try {
@@ -59,18 +62,63 @@ export default function EditPlace() {
     loadData();
   }, []);
 
+  async function onUpdateImage(data) {
+    try {
+      const responseData = await placeService.updatePicture(id, data);
+
+      if (responseData.url) {
+        setPlace({ ...place, pictureUrl: responseData.url });
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      return false;
+    }
+  }
+
   return (
     <Stack maxW="46rem" flex={1} pb={2}>
       {place && (
-        <AspectRatioBox w="100%" ratio={2.5}>
-          <Image
-            src={place.pictureUrl}
-            alt=""
-            objectFit="cover"
-            h="100%"
-            w="100%"
+        <>
+          <AspectRatio w="100%" ratio={2.5} pos="relative" onClick={onOpen}>
+            <Box>
+              <Image
+                src={place.pictureUrl}
+                alt=""
+                objectFit="cover"
+                h="100%"
+                w="100%"
+              />
+              <Box
+                pos="absolute"
+                h="100%"
+                w="100%"
+                top={0}
+                left={0}
+                right={0}
+                bottom={0}
+                bg="gray.900"
+                opacity="0"
+                cursor="pointer"
+                _hover={{ opacity: ".6" }}
+              >
+                <Flex align="center" justifyContent="center" height="100%">
+                  <Box
+                    as={FaCamera}
+                    opacity="1"
+                    fontSize={{ base: "xl", md: "6xl" }}
+                  />
+                </Flex>
+              </Box>
+            </Box>
+          </AspectRatio>
+          <ImageUploader
+            upload={onUpdateImage}
+            isOpen={isOpen}
+            onClose={onClose}
           />
-        </AspectRatioBox>
+        </>
       )}
       <Box textAlign="left">
         <Link as={RouterLink} to={`/places/${place?.id}`}>
@@ -110,9 +158,10 @@ export default function EditPlace() {
                       {s.name}
                     </Heading>
                     <IconButton
-                      icon={FaPlus}
+                      aria-label="Adicionar quadra"
+                      icon={<FaPlus />}
                       variant="outline"
-                      variantColor="green"
+                      colorScheme="green"
                       isRound
                     />
                   </Flex>
@@ -196,7 +245,7 @@ export default function EditPlace() {
             <Button
               as={RouterLink}
               to={`/places/${place.id}/scheadules/new`}
-              variantColor="green"
+              colorScheme="green"
             >
               Novo Cronograma
             </Button>

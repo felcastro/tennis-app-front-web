@@ -9,7 +9,7 @@ import {
   Divider,
   Avatar,
   SimpleGrid,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { FaCalendarDay, FaMapMarkerAlt } from "react-icons/fa";
 import { GiTennisRacket, GiTennisCourt } from "react-icons/gi";
 

@@ -9,7 +9,8 @@ import {
   Flex,
   Link,
   Stack,
-} from "@chakra-ui/core";
+  HStack,
+} from "@chakra-ui/react";
 import { FaCommentDots } from "react-icons/fa";
 import { IoIosTennisball } from "react-icons/io";
 
@@ -40,7 +41,7 @@ export default function Navbar() {
         fontWeight="bold"
         fontSize={{ base: "2xl", md: "3xl" }}
       >
-        <Stack isInline align="center">
+        <HStack spacing={{ base: 4, md: 0 }}>
           <MenuSwitchButton />
           <Link as={RouterLink} to="/" _hover={{ textDecoration: "none" }}>
             <Flex align="center">
@@ -48,9 +49,9 @@ export default function Navbar() {
               <Box display={{ base: "none", md: "block" }}>TennisApp</Box>
             </Flex>
           </Link>
-        </Stack>
+        </HStack>
 
-        <Stack isInline spacing={{ base: 0, md: 5 }} align="center">
+        <HStack spacing={{ base: 0, md: 5 }}>
           <Link as={RouterLink} to="/">
             <Box as={FaCommentDots} />
           </Link>
@@ -59,7 +60,7 @@ export default function Navbar() {
             name={user.name}
             display={{ base: "none", md: "block" }}
           />
-        </Stack>
+        </HStack>
       </Flex>
     </Box>
   );

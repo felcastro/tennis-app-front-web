@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import PropTypes, { func } from "prop-types";
+import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import {
   Stack,
@@ -20,7 +20,7 @@ import {
   Checkbox,
   RadioGroup,
   Radio,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 
 export default function EditTimeSlotModal({
   onSubmit,
@@ -110,11 +110,8 @@ export default function EditTimeSlotModal({
           <Stack spacing={4}>
             <FormControl isInvalid={errors.price}>
               <FormLabel htmlFor="price">Custo (R$)</FormLabel>
-              <Stack spacing={2}>
-                <RadioGroup
-                  onChange={(e) => setCostType(e.target.value)}
-                  value={costType}
-                >
+              <RadioGroup onChange={setCostType} value={costType}>
+                <Stack>
                   <Radio value="0">Nenhum</Radio>
                   <Radio value="1" isDisabled={!watchIsActive}>
                     Adicional
@@ -122,21 +119,21 @@ export default function EditTimeSlotModal({
                   <Radio value="2" isDisabled={!watchIsActive}>
                     Desconto
                   </Radio>
-                </RadioGroup>
-                <Input
-                  id="price"
-                  name="price"
-                  placeholder="0.00"
-                  type="number"
-                  isDisabled={isLoading || costType === "0"}
-                  ref={(e) => {
-                    register(e, {
-                      min: { value: 0, message: "Não pode ser menor que zero" },
-                    });
-                    priceInputRef.current = e;
-                  }}
-                />
-              </Stack>
+                </Stack>
+              </RadioGroup>
+              <Input
+                id="price"
+                name="price"
+                placeholder="0.00"
+                type="number"
+                isDisabled={isLoading || costType === "0"}
+                ref={(e) => {
+                  register(e, {
+                    min: { value: 0, message: "Não pode ser menor que zero" },
+                  });
+                  priceInputRef.current = e;
+                }}
+              />
               <FormErrorMessage>
                 {errors.price && errors.price.message}
               </FormErrorMessage>
@@ -166,7 +163,7 @@ export default function EditTimeSlotModal({
           <Button
             isLoading={isLoading}
             type="submit"
-            variantColor="green"
+            colorScheme="green"
             width="100%"
             mt={4}
             ref={initialRef}

@@ -1,7 +1,6 @@
 import React from "react";
-import { Spinner, theme, ColorModeProvider, CSSReset } from "@chakra-ui/core";
+import { Spinner, theme, ChakraProvider, Flex } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import { ThemeProvider } from "emotion-theming";
 
 const AuthenticatedApp = React.lazy(() => import("./AuthenticatedApp"));
 const UnauthenticatedApp = React.lazy(() => import("./UnauthenticatedApp"));
@@ -69,18 +68,19 @@ export default () => {
     },
   };
 
+  function LoadingPage() {
+    return (
+      <Flex w="100%" h="100vh" align="center" justifyContent="center">
+        <Spinner size="lg" />
+      </Flex>
+    );
+  }
+
   return (
-    <ThemeProvider theme={customTheme}>
-      <CSSReset />
-      <React.Suspense fallback={<Spinner />}>
-        {user ? (
-          <ColorModeProvider>
-            <AuthenticatedApp />
-          </ColorModeProvider>
-        ) : (
-          <UnauthenticatedApp />
-        )}
+    <ChakraProvider theme={customTheme}>
+      <React.Suspense fallback={<LoadingPage />}>
+        {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
       </React.Suspense>
-    </ThemeProvider>
+    </ChakraProvider>
   );
 };
